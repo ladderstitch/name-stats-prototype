@@ -1,5 +1,14 @@
 import os, re
 
+class Name
+    def __init__(self, name, m, f):
+        self.name = name
+        self.m = m
+        self.f = f
+
+    def __str__(self):
+        return f'{self.name} m:{self.m} f:{self.f}'
+
 list_of_files = os.listdir('./data')
 
 years = []
