@@ -9,4 +9,7 @@ for file in list_of_files:
         years |= {int(re.match('yob(\d+)\.txt', file).group(1))}
 years = sorted(years)
 
-print(years)
+first_year = input('Enter the first year: ')
+last_year = input('Enter the last year: ')
+
+print(f'range {first_year} to {last_year}')
