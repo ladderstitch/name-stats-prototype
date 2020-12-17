@@ -1,7 +1,7 @@
 import os, re, csv
 
 class Name:
-    def __init__(self, name, m, f):
+    def __init__(self, name, m=0, f=0):
         self.name = name
         self.m = m
         self.f = f
