@@ -1,4 +1,4 @@
-import os, re
+import os, re, csv
 
 class Name:
     def __init__(self, name, m, f):
@@ -22,3 +22,14 @@ first_year = int(input('Enter the first year: '))
 last_year = int(input('Enter the last year: '))
 
 print(f'range {first_year} to {last_year}')
+
+names = {}
+
+for year in range(first_year, last_year + 1):
+    with open(f'./data/yob{year}.txt') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        names[year] = {}
+        for row in csv_reader:
+            names[year][row[0]] = int(row[2])
+
+print(names)
