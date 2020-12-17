@@ -9,6 +9,15 @@ class Name:
     def __str__(self):
         return f'{self.name} m:{self.m} f:{self.f}'
 
+    def __repr__(self):
+        return f'<{self.name}: m:{self.m}, f:{self.f}>'
+
+    def __eq__(self, x):
+        if x.isinstance(Name):
+            return self.name == x.name
+        else:
+            return self.name == x
+
 list_of_files = os.listdir('./data')
 
 years = []
