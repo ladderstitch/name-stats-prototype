@@ -1,6 +1,6 @@
 import os, re
 
-class Name
+class Name:
     def __init__(self, name, m, f):
         self.name = name
         self.m = m
