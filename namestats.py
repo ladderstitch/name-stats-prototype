@@ -102,9 +102,25 @@ def get_year_range(years):
         except ValueError:
             print('Invalid input, please try again.')
             last_year = -1
-
     print(f'range {first_year} to {last_year}')
     return (first_year, last_year)
+
+def get_neutrality_threshold():
+    ratio = -1
+    while ratio < 0:
+        ratio = input('Enter a neutrality threshold or press q to quit: ')
+        if ratio == 'q':
+            sys.exit('Goodbye!')
+        try:
+            if 0 <= float(ratio) <= 1:
+                ratio = float(ratio)
+            else:
+                print('Threshold must be a float from 0 to 1')
+                ratio = -1
+        except ValueError:
+            print('Invalid input, please try again.')
+            ratio = -1
+    return ratio
 
 list_of_files = os.listdir('./data')
 
@@ -130,5 +146,8 @@ for year in range(year_range[0], year_range[1] + 1):
             else:
                 raise ValueError('Unexpected gender marker')
 
+ratio = get_neutrality_threshold()
+
+neutral_names = [x for x in names.sorted_by_total() if abs(x.ratio()) <= ratio]
 
 print(names)
