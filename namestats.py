@@ -1,16 +1,24 @@
 import os, re, csv, sys
+from g2p_en import G2p
+
+g2p = G2p()
 
 class Name:
-    def __init__(self, name, m=0, f=0):
+    def __init__(self, name, m=0, f=0, phnms='', sibs=None):
         self.name = name
         self.m = m
         self.f = f
+        self.phnms = phnms
+        if sibs:
+            self.sibs = sibs
+        else:
+            self.sibs = set()
 
     def __str__(self):
-        return f'{self.name} m:{self.m} f:{self.f}'
+        return f'{self.name} m:{self.m} f:{self.f} phnms:{self.phnms} sibs:{self.sibs}'
 
     def __repr__(self):
-        return f'<{self.name}: m:{self.m}, f:{self.f}>'
+        return f'<{self.name}: m:{self.m}, f:{self.f}, phnms:{self.phnms}, sibs:{self.sibs}>'
 
     def __eq__(self, x):
         if x.isinstance(Name):
@@ -64,12 +72,15 @@ class Name_Collection:
     def sorted_by_neutrality(self):
         return sorted(list(self._names.values()), key=lambda x: abs(x.ratio()), reverse=False)
 
-    def add(self, name, m=0, f=0):
+    def add(self, name, m=0, f=0, sibling=False, phnms=''):
         if name in self:
             self._names[name].m += m
             self._names[name].f += f
+            if sibling:
+                self._names[name].sibs |= {sibling}
         else:
-            self._names[name] = Name(name, m=m, f=f)
+            self._names[name] = Name(name, m=m, f=f, phnms=''.join(g2p(name)))
+
 
 def get_year_range(years):
     print(f'Data available for years {years[0]} - {years[-1]}.')
