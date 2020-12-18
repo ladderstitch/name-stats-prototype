@@ -18,6 +18,14 @@ class Name:
         else:
             return self.name == x
 
+    def total(self):
+        return self.m + self.f
+
+    def ratio(self):
+        # ratio of people with each gender marker,
+        # where -1 is 100% m and 1 is 100% f
+        return (self.f - self.m) / self.total()
+
 class Name_Collection:
     def __init__(self):
         self._names = {}
