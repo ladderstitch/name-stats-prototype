@@ -68,13 +68,18 @@ last_year = int(input('Enter the last year: '))
 
 print(f'range {first_year} to {last_year}')
 
-names = {}
+names = Name_Collection()
 
 for year in range(first_year, last_year + 1):
     with open(f'./data/yob{year}.txt') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
-        names[year] = {}
         for row in csv_reader:
-            names[year][row[0]] = int(row[2])
+            if row[1].lower() == 'm':
+                names.add(row[0], m=int(row[2]))
+            elif row[1].lower() == 'f':
+                names.add(row[0], f=int(row[2]))
+            else:
+                raise ValueError('Unexpected gender marker')
+
 
 print(names)
