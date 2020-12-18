@@ -18,6 +18,42 @@ class Name:
         else:
             return self.name == x
 
+class Name_Collection:
+    def __init__(self):
+        self._names = {}
+
+    def __getitem__(self, name):
+        return self._names[name]
+
+    def __iter__(self):
+        return self._names
+
+    def __contains__(self, name):
+        out = None
+        try:
+            self._names[name]
+            out = True
+        except KeyError:
+            out = False
+        return out
+
+    def __repr__(self):
+        out = '{'
+        for name in self._names:
+            out += self._names[name].__repr__() + ', '
+        if out.endswith(', '):
+            out = out[:-2] + '}'
+        else:
+            out += '}'
+        return out
+
+    def add(self, name, m=0, f=0):
+        if name in self:
+            self._names[name].m += m
+            self._names[name].f += f
+        else:
+            self._names[name] = Name(name, m=m, f=f)
+
 list_of_files = os.listdir('./data')
 
 years = []
