@@ -81,6 +81,16 @@ class Name_Collection:
         else:
             self._names[name] = Name(name, m=m, f=f, phnms=''.join(g2p(name)))
 
+    def reduced(self):
+        oldest_sibs = {}
+        reduced = Name_Collection()
+        for name in self.sorted_by_total():
+            try:
+                reduced.add(oldest_sibs[name.phnms], m=name.m, f=name.f, sibling=name.name)
+            except KeyError:
+                oldest_sibs[name.phnms] = name.name
+                reduced.add(name.name, m=name.m, f=name.f, phnms=name.phnms)
+        return reduced
 
 def get_year_range(years):
     print(f'Data available for years {years[0]} - {years[-1]}.')
@@ -176,10 +186,13 @@ for year in range(year_range[0], year_range[1] + 1):
                 names.add(row[0], f=int(row[2]))
             else:
                 raise ValueError('Unexpected gender marker')
+reduced = names.reduced()
 
-ratio = get_neutrality_threshold()
-batch_size = get_batch_size(len(names))
-
-neutral_names = [x for x in names.sorted_by_total() if abs(x.ratio()) <= ratio]
-
-print(neutral_names[0:batch_size])
+while True:
+    ratio = get_neutrality_threshold()
+    batch_size = get_batch_size(len(names))
+    neutral_names = [x for x in reduced.sorted_by_total() if abs(x.ratio()) <= ratio]
+    print('')
+    for name in neutral_names[0:batch_size]:
+        print(f'{name.name} ratio: {abs(name.ratio()):4f} m: {name.m} f: {name.f} total spellings: {len(name.sibs) + 1}')
+    print('')
