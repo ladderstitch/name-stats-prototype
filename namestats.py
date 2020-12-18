@@ -55,6 +55,9 @@ class Name_Collection:
             out += '}'
         return out
 
+    def __len__(self):
+        return len(self._names)
+
     def sorted_by_total(self):
         return sorted(list(self._names.values()), key=lambda x: x.total(), reverse=True)
 
