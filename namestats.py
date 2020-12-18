@@ -55,6 +55,12 @@ class Name_Collection:
             out += '}'
         return out
 
+    def sorted_by_total(self):
+        return sorted(list(self._names.values()), key=lambda x: x.total(), reverse=True)
+
+    def sorted_by_neutrality(self):
+        return sorted(list(self._names.values()), key=lambda x: abs(x.ratio()), reverse=False)
+
     def add(self, name, m=0, f=0):
         if name in self:
             self._names[name].m += m
