@@ -126,7 +126,7 @@ def get_year_range(years):
         except ValueError:
             print('Invalid input, please try again.')
             last_year = -1
-    print(f'range {first_year} to {last_year}')
+    print(f'Selected range is {first_year} to {last_year}')
     return (first_year, last_year)
 
 def get_neutrality_threshold():
@@ -173,6 +173,8 @@ for file in list_of_files:
 years = sorted(years)
 
 year_range = get_year_range(years)
+
+print('Processing names. This can take a while, please wait.')
 
 names = Name_Collection()
 
