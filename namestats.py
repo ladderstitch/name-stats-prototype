@@ -125,6 +125,23 @@ def get_neutrality_threshold():
             ratio = -1
     return ratio
 
+def get_batch_size(max):
+    num = -1
+    while num < 0:
+        num = input('Enter how many names to display or press q to quit: ')
+        if num == 'q':
+            sys.exit('Goodbye!')
+        try:
+            if 0 <= int(num) <= max:
+                num = int(num)
+            else:
+                print(f'Number must be an int from 0 to {max}')
+                num = -1
+        except ValueError:
+            print('Invalid input, please try again.')
+            num = -1
+    return num
+
 list_of_files = os.listdir('./data')
 
 years = []
@@ -150,7 +167,8 @@ for year in range(year_range[0], year_range[1] + 1):
                 raise ValueError('Unexpected gender marker')
 
 ratio = get_neutrality_threshold()
+batch_size = get_batch_size(len(names))
 
 neutral_names = [x for x in names.sorted_by_total() if abs(x.ratio()) <= ratio]
 
-print(names)
+print(neutral_names[0:batch_size])
