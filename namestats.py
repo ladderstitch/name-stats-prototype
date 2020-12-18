@@ -1,4 +1,4 @@
-import os, re, csv
+import os, re, csv, sys
 
 class Name:
     def __init__(self, name, m=0, f=0):
@@ -54,6 +54,44 @@ class Name_Collection:
         else:
             self._names[name] = Name(name, m=m, f=f)
 
+def get_year_range(years):
+    print(f'Data available for years {years[0]} - {years[-1]}.')
+    first_year = -1
+    while int(first_year) not in years:
+        first_year = input('Enter the first year or press q to quit: ')
+        if first_year == 'q':
+            sys.exit('Goodbye!')
+        try:
+            if int(first_year) in years:
+                first_year = int(first_year)
+            else:
+                print('No data for selected year.')
+                first_year = -1
+        except ValueError:
+            print('Invalid input, please try again.')
+            first_year = -1
+
+    last_year = -1
+    while int(last_year) not in years:
+        last_year = input('Enter the last year or press q to quit: ')
+        if last_year == 'q':
+            sys.exit('Goodbye!')
+        try:
+            if int(last_year) in years:
+                last_year = int(last_year)
+                if last_year < first_year:
+                    print('Last year cannot be less than first year. Please try again')
+                    last_year = -1
+            else:
+                print('No data for selected year.')
+                last_year = -1
+        except ValueError:
+            print('Invalid input, please try again.')
+            last_year = -1
+
+    print(f'range {first_year} to {last_year}')
+    return (first_year, last_year)
+
 list_of_files = os.listdir('./data')
 
 years = []
@@ -63,14 +101,11 @@ for file in list_of_files:
         years.append(int(re.match('yob(\d+)\.txt', file).group(1)))
 years = sorted(years)
 
-first_year = int(input('Enter the first year: '))
-last_year = int(input('Enter the last year: '))
-
-print(f'range {first_year} to {last_year}')
+year_range = get_year_range(years)
 
 names = Name_Collection()
 
-for year in range(first_year, last_year + 1):
+for year in range(year_range[0], year_range[1] + 1):
     with open(f'./data/yob{year}.txt') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
